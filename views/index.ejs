@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  
+  <title>Frontend Mentor | IP Address Tracker</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+
+   <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+  <div id="bg"></div>
+
+  <main>
+    <h1>IP Address Tracker</h1>
+
+    <form method="post" action="/">
+      <input type="text" name="ipAddress" id="ip" aria-describedby="post ip address" placeholder="Search for any IP address or domain" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$">
+      <button type="submit"><img src="./images/icon-arrow.svg"></button>
+    </form>
+
+    <div class="container">
+      <section>
+        <h2>IP Address</h2>
+        <p> <%= ipAddress %> </p>
+      </section>
+      <section>
+        <h2>Location</h2>
+        <p> <%= location.city %>, <%= location.region %>  <%= location.postal %> </p>
+      </section>
+      <section>
+        <h2>Timezone</h2>
+        <p>UTC <%= getTimeZone %> </p>
+      </section>
+      <section>
+        <h2>ISP</h2>
+        <p> <%= getIsp %> </p>
+      </section>
+    </div>
+  </main>
+
+  <div id="map"></div>
+ 
+  <!-- <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Your Name Here</a>.
+  </div> -->
+
+  <script>
+    var mymap = L.map('map', { zoomControl: false }).setView([<%= getLat %>, <%= getLng %>], 14);
+
+    const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    const tileURL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    const tiles = L.tileLayer(tileURL, { attribution });
+
+    tiles.addTo(mymap);
+
+    var myIcon = L.icon({
+      iconUrl: './images/icon-location.svg',
+    });
+
+    var marker = L.marker([<%= getLat %>, <%= getLng %>], {icon: myIcon}).addTo(mymap);
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap");
+
+// variables
+
+$d-gray: hsl(0, 0%, 59%);
+$v-d-gray: hsl(0, 0%, 17%);
+
+// responsive
+
+@mixin tablet {
+    @media screen and (min-width: 768px) {
+        @content; 
+    }
+}
+
+@mixin laptop {
+    @media screen and (min-width: 1200px) {
+        @content; 
+    }
+}
