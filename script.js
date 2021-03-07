@@ -12,10 +12,10 @@ app.use(express.urlencoded({extended: true}));
 
 const api_key = process.env.API_KEY;
 const api_url = 'https://geo.ipify.org/api/v1?';
+let localIp = "";
+fetch("http://api.ipify.org/?format=json").then(res => res.json()).then(data => localIp = data.ip);
 
 app.get("/", function (req, res) {
-    let localIp = "";
-    fetch("http://api.ipify.org/?format=json").then(res => res.json()).then(data => localIp = data.ip);
     const url = api_url + 'apiKey=' + api_key + '&ipAddress=' + localIp;
 
     https.get(url, function(response) {
