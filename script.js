@@ -12,11 +12,14 @@ app.use(express.urlencoded({extended: true}));
 
 const api_key = process.env.API_KEY;
 const api_url = 'https://geo.ipify.org/api/v1?';
-let localIp = "";
-fetch("https://ipinfo.io/json?token=dda443862d952e").then(res => res.json()).then(data => localIp = data.ip)
+let clientIp = "";
+// fetch("https://ipinfo.io/json?token=dda443862d952e").then(res => res.json()).then(data => localIp = data.ip)
+fetch("https://api64.ipify.org?format=json").then(res => res.json()).then(data => clientIp = data.ip);
+
 
 app.get("/", function (req, res) {
-    const url = api_url + 'apiKey=' + api_key + '&ipAddress=' + localIp;
+    const url = api_url + 'apiKey=' + api_key + '&ipAddress=' + clientIp;
+    console.log(clientIp);
     https.get(url, function(response) {
         let ipData = "";
         response.on("data", function(data) {
@@ -29,7 +32,7 @@ app.get("/", function (req, res) {
             const isp = ipData.isp;
             const lat = ipData.location.lat;
             const lng = ipData.location.lng;
-            res.render("index", {ipAddress: ip, location: {city, region, postal}, getTimeZone: timeZone, getIsp: isp, getLat: lat, getLng: lng});
+            res.render("index", {getClientIp: clientIp, ipAddress: ip, location: {city, region, postal}, getTimeZone: timeZone, getIsp: isp, getLat: lat, getLng: lng});
         });
     });
 })
