@@ -12,18 +12,18 @@ app.use(express.urlencoded({extended: true}));
 const api_key = process.env.API_KEY;
 const api_url = 'https://geo.ipify.org/api/v1?';
 
-let clientData = "";
-let clientIp = "";
-https.get("https://api64.ipify.org?format=json", function(response) {
-    response.on("data", function(data) {
-        clientData = JSON.parse(data);
-        clientIp = clientData.ip;
-        console.log(clientIp);
-    });
-});
+// let clientData = "";
+// let clientIp = "";
+// https.get("https://api64.ipify.org?format=json", function(response) {
+//     response.on("data", function(data) {
+//         clientData = JSON.parse(data);
+//         clientIp = clientData.ip;
+//         console.log(clientIp);
+//     });
+// });
 
 app.get("/", function (req, res) {
-    const url = api_url + 'apiKey=' + api_key + '&ipAddress=' + clientIp;
+    const url = api_url + 'apiKey=' + api_key + '&domain=';
     https.get(url, function(response) {
         response.on("data", function(data) {
             const ipData = JSON.parse(data);
