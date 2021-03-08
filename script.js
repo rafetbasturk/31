@@ -1,6 +1,5 @@
 const express = require("express");
 const https = require("https");
-const fetch = require('node-fetch');
 require('dotenv').config();
 
 const app = express();
@@ -16,9 +15,8 @@ const api_url = 'https://geo.ipify.org/api/v1?';
 app.get("/", function (req, res) {
     const url = api_url + 'apiKey=' + api_key;
     https.get(url, function(response) {
-        let ipData = "";
         response.on("data", function(data) {
-            ipData = JSON.parse(data);
+            const ipData = JSON.parse(data);
             const ip = ipData.ip;
             const city = ipData.location.city;
             const region = ipData.location.region;
@@ -37,9 +35,8 @@ app.post("/", function (req, res) {
     const url = api_url + 'apiKey=' + api_key + '&ipAddress=' + inputIp;
 
     https.get(url, function(response) {
-        let ipData = "";
         response.on("data", function(data) {
-            ipData = JSON.parse(data);
+            const ipData = JSON.parse(data);
             const ip = ipData.ip;
             const city = ipData.location.city;
             const region = ipData.location.region;
