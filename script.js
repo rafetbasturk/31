@@ -12,9 +12,19 @@ app.use(express.urlencoded({extended: true}));
 const api_key = process.env.API_KEY;
 const api_url = 'https://geo.ipify.org/api/v1?';
 
+let clientData = "";
+let clientIp = "";
+const url = "https://api.ipify.org?format=json";
+https.get(url, function(response) {
+    response.on("data", function(data) {
+        clientData = JSON.parse(data);
+        clientIp = clientData.ip;
+    });
+});
+
 app.get("/", function (req, res) {
-    const url = api_url + 'apiKey=' + api_key;
-    https.get(url, function(response) {
+    const ipUrl = api_url + 'apiKey=' + api_key + '&ipAddress=' + clientIp;
+    https.get(ipUrl, function(response) {
         response.on("data", function(data) {
             const ipData = JSON.parse(data);
             const ip = ipData.ip;
@@ -25,16 +35,17 @@ app.get("/", function (req, res) {
             const isp = ipData.isp;
             const lat = ipData.location.lat;
             const lng = ipData.location.lng;
-            res.render("index", {ipAddress: ip, location: {city, region, postal}, getTimeZone: timeZone, getIsp: isp, getLat: lat, getLng: lng});
+            
+            res.render("index", {ipAddress: ip, location: {city, region, postal}, getTimeZone: timeZone, getIsp: isp, getLat: lat, getLng: lng})
         });
-    });
-})
+    })
+});
 
 app.post("/", function (req, res) {
     const inputIp = req.body.ipAddress;
-    const url = api_url + 'apiKey=' + api_key + '&ipAddress=' + inputIp;
+    const postUrl = api_url + 'apiKey=' + api_key + '&ipAddress=' + inputIp;
 
-    https.get(url, function(response) {
+    https.get(postUrl, function(response) {
         response.on("data", function(data) {
             const ipData = JSON.parse(data);
             const ip = ipData.ip;
