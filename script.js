@@ -11,11 +11,11 @@ app.use(express.urlencoded({extended: true}));
 
 const api_key = process.env.API_KEY;
 const api_url = 'https://geo.ipify.org/api/v1?';
+let url = "";
 
 let clientData = "";
 let clientIp = "";
-const url = "https://api.ipify.org?format=json";
-https.get(url, function(response) {
+https.get("https://api64.ipify.org?format=json", function(response) {
     response.on("data", function(data) {
         clientData = JSON.parse(data);
         clientIp = clientData.ip;
@@ -23,8 +23,8 @@ https.get(url, function(response) {
 });
 
 app.get("/", function (req, res) {
-    const ipUrl = api_url + 'apiKey=' + api_key + '&ipAddress=' + clientIp;
-    https.get(ipUrl, function(response) {
+    url = api_url + 'apiKey=' + api_key + '&ipAddress=' + clientIp;
+    https.get(url, function(response) {
         response.on("data", function(data) {
             const ipData = JSON.parse(data);
             const ip = ipData.ip;
@@ -43,9 +43,9 @@ app.get("/", function (req, res) {
 
 app.post("/", function (req, res) {
     const inputIp = req.body.ipAddress;
-    const postUrl = api_url + 'apiKey=' + api_key + '&ipAddress=' + inputIp;
+    url = api_url + 'apiKey=' + api_key + '&ipAddress=' + inputIp;
 
-    https.get(postUrl, function(response) {
+    https.get(url, function(response) {
         response.on("data", function(data) {
             const ipData = JSON.parse(data);
             const ip = ipData.ip;
